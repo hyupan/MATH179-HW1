@@ -23,6 +23,7 @@ void writergb(ofstream& outfile, double r, double g, double b);
 double **matrix(int width, int height);
 void free_matrix(double **f, int width, int height);
 //   YOUR FUNCTIONS HERE
+double changeIntensity(double c);
 
 //MAIN BODY HERE
 int main()
@@ -32,9 +33,11 @@ int main()
    double **f;
    double x, y, h;
    int i, j;
+   int countZeros;
+   int countOnes;
 
 // if reading in picture
-   ifstream infile("cactus.bmp", ios::in | ios::binary);
+   ifstream infile("books.bmp", ios::in | ios::binary);
    f = readpicture(infile,width,height);
    infile.close();
 // if creating picture
@@ -42,6 +45,18 @@ int main()
 //   height = 100;
 //   f = matrix(width,height);
 
+  countZeros = 0; countOnes = 0;
+  for(i = 0; i < width; i++) {
+    for(j = 0; j < height; j++) {
+      f[i][j] = changeIntensity(f[i][j]);
+      if(f[i][j] == 1) {
+        ++countOnes;
+      } else {
+        ++countZeros;
+      }
+    }
+  }
+  printf("%s%d\n%s%d\n", "number of pixels intensity 0: ",  countZeros, "number of pixels intensity 1: ", countOnes);
 // writing picture
    ofstream outfile("result.bmp", ios::out | ios::binary);
    writepicture(outfile,f,width,height);
@@ -357,3 +372,6 @@ void free_matrix(double **f, int width, int height)
 //**************************************************************************
 //YOUR FUNCTIONS HERE
 //**************************************************************************
+double changeIntensity(double c) {
+  return (double)round(c);
+}
